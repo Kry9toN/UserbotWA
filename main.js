@@ -23,10 +23,10 @@ async function automaticStatus() {
         const time = date.getHours()
         if (time = 3) {
             const respon = await wa.sendMessage('status@broadcast', storyMessage, MessageType.text)
-            if (statusId.length > 0) {
-                await wa.deleteMessage('status@broadcast', {id: statusId, remoteJid: 'status@broadcast', fromMe: true})
+            if (!storyId == "") {
+                await wa.deleteMessage('status@broadcast', {id: storyId, remoteJid: 'status@broadcast', fromMe: true})
             }
-            statusId = respon.key.id
+            storyId = respon.key.id
         }
         await sleep(360000)
     }
