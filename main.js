@@ -21,7 +21,6 @@ async function automaticStatus() {
     while(true) {
         const date = new Date()
         const time = date.getHours()
-        await sleep(360000)
         if (time = 3) {
             const respon = await wa.sendMessage('status@broadcast', storyMessage, MessageType.text)
             if (statusId.length > 0) {
@@ -29,6 +28,7 @@ async function automaticStatus() {
             }
             statusId = respon.key.id
         }
+        await sleep(360000)
     }
-
+}
 automaticStatus().catch(err => console.error('Unexpected error: ' + err))
