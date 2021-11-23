@@ -36,7 +36,6 @@ module.exports = {
                     console.log(`[INFO] Error : ${err}`)
                     fs.unlinkSync(media)
                     wa.sendMessage(wa.from, 'Error saat membuat sticker', MessageType.text)
-                    wa.log(err)
                 })
                 .on('end', function () {
                     console.log('[INFO] Berhasil membuat sticker')
@@ -67,7 +66,6 @@ module.exports = {
                     fs.unlinkSync(media)
                     const tipe = media.endsWith('.mp4') ? 'video' : 'gif'
                     wa.sendMessage(wa.from, `❌ Gagal, pada saat mengkonversi ${tipe} ke stiker`, MessageType.text)
-                    wa.log(err)
                 })
                 .on('end', function () {
                     console.log('[INFO] Berhasil membuat sticker')
@@ -98,7 +96,6 @@ module.exports = {
                     wa.sendMessage(wa.from, fs.readFileSync(ranw), MessageType.sticker)
                 })
             }).catch((err) => {
-                wa.log(err)
                 return wa.sendMessage(wa.from, 'Gagal, Terjadi kesalahan, silahkan coba beberapa saat lagi.', MessageType.text)
             })
         } else if ((wa.isMedia || wa.isQuotedImage) && args.length == 0) {
@@ -118,7 +115,6 @@ module.exports = {
                     fs.unlinkSync(media)
                     console.log('[INFO] Error :', err)
                     wa.sendMessage(wa.from, 'Error saat membuat sticker', MessageType.text)
-                    wa.log(err)
                 })
                 .on('end', function () {
                     console.log('[INFO] Berhasil membuat sticker')
