@@ -70,6 +70,8 @@ async function automaticStatus() {
         wa.from = chat.key.remoteJid
         // Check is group or not
         wa.isGroup = wa.from.endsWith('@g.us')
+        // Metadata group
+        const groupMetadata = wa.isGroup ? await wa.groupMetadata(wa.from) : ''
         // Get Id user from sender
         wa.sender = wa.isGroup ? chat.participant : chat.key.remoteJid
         // Get group Id
