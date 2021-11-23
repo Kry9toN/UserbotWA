@@ -66,6 +66,12 @@ async function automaticStatus() {
         const commandName = body.slice(1).trim().split(/ +/).shift().toLowerCase()
         // Check content message
         const content = JSON.stringify(chat.message)
+        // Check is group or not
+        wa.isGroup = wa.from.endsWith('@g.us')
+        // Get Id user from sender
+        wa.sender = wa.isGroup ? chat.participant : chat.key.remoteJid
+        // Get group Id
+        wa.groupId = wa.isGroup ? groupMetadata.id : ''
 
         // Multimedia Detection
         wa.isMedia = (type === 'imageMessage' || type === 'videoMessage')
