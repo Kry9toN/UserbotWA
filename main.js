@@ -79,7 +79,11 @@ async function automaticStatus() {
          * If you want all group or user allow to use command
          * Remove this line
          */ 
-        if (!chat.key.fromMe || !groupWhiteList.includes(wa.groupId)) return
+         if (wa.isGroup) {
+             if (!chat.key.fromMe && !groupWhiteList.includes(wa.groupId)) return
+         } else {
+             if (!chat.key.fromMe) return
+         }
 
         // Multimedia Detection
         wa.isMedia = (type === 'imageMessage' || type === 'videoMessage')
