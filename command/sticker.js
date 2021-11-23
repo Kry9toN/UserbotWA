@@ -10,9 +10,21 @@ module.exports = {
     aliases: ['s', 'st'],
     description: 'Untuk menjadikan video atau gambar menjadi sticker\nPenggunaan: quoted gambar/vidio !sticker <rbg/nobg> rbg: remove background, nobg: no background on sticker, default sticker dengan background',
     async execute (wa, chat, pesan, args) {
+        let durasi
+        if (!durasi) {
+            durasi = 0
+        } else {
+            durasi = chat.message.videoMessage.seconds
+        }
+
         if ((wa.isMedia && !chat.message.videoMessage || wa.isQuotedImage) && args[0] == 'nobg') {
-            const encmedia = wa.isQuotedImage ? JSON.parse(JSON.stringify(chat).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : chat
-            const media = await wa.downloadAndSaveMediaMessage(encmedia)
+            const encmedia = wa.isQuotedImage ? JSON.parse(JSON.stringify(chat).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : await wa.fetchMessagesFromWA(chat.key.remoteJid, 1, { id: chat.key.id })
+            let media
+            if (wa.isQuotedImage) {
+                media = await wa.downloadAndSaveMediaMessage(encmedia)
+            } else {
+                media = await wa.downloadAndSaveMediaMessage(encmedia[0])
+            }
             const ranw = getRandom('.webp')
             wa.sendMessage(wa.from, pesan.tunggu, MessageType.text)
             await ffmpeg(`./${media}`)
@@ -35,9 +47,14 @@ module.exports = {
                 .addOutputOptions(['-vcodec', 'libwebp', '-vf', 'scale=\'min(320,iw)\':min\'(320,ih)\':force_original_aspect_ratio=decrease,fps=15, pad=320:320:-1:-1:color=white@0.0, split [a][b]; [a] palettegen=reserve_transparent=on:transparency_color=ffffff [p]; [b][p] paletteuse'])
                 .toFormat('webp')
                 .save(ranw)
-        } else if ((wa.isMedia && chat.message.videoMessage.seconds < 11 || wa.isQuotedVideo && chat.message.extendedTextMessage.contextInfo.quotedMessage.videoMessage.seconds < 11) && args.length == 0) {
-            const encmedia = wa.isQuotedVideo ? JSON.parse(JSON.stringify(chat).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : chat
-            const media = await wa.downloadAndSaveMediaMessage(encmedia)
+        } else if ((wa.isMedia && durasi < 11 && !durasi == 0 || wa.isQuotedVideo && chat.message.extendedTextMessage.contextInfo.quotedMessage.videoMessage.seconds < 11) && args.length == 0) {
+            const encmedia = wa.isQuotedImage ? JSON.parse(JSON.stringify(chat).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : await wa.fetchMessagesFromWA(chat.key.remoteJid, 1, { id: chat.key.id })
+            let media
+            if (wa.isQuotedImage) {
+                media = await wa.downloadAndSaveMediaMessage(encmedia)
+            } else {
+                media = await wa.downloadAndSaveMediaMessage(encmedia[0])
+            }
             const ranw = getRandom('.webp')
             wa.sendMessage(wa.from, pesan.tunggu, MessageType.text)
             await ffmpeg(`./${media}`)
@@ -62,8 +79,13 @@ module.exports = {
                 .toFormat('webp')
                 .save(ranw)
         } else if ((wa.isMedia || wa.isQuotedImage) && args[0] == 'rbg') {
-            const encmedia = wa.isQuotedImage ? JSON.parse(JSON.stringify(chat).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : chat
-            const media = await wa.downloadAndSaveMediaMessage(encmedia)
+            const encmedia = wa.isQuotedImage ? JSON.parse(JSON.stringify(chat).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : await wa.fetchMessagesFromWA(chat.key.remoteJid, 1, { id: chat.key.id })
+            let media
+            if (wa.isQuotedImage) {
+                media = await wa.downloadAndSaveMediaMessage(encmedia)
+            } else {
+                media = await wa.downloadAndSaveMediaMessage(encmedia[0])
+            }
             const ranw = getRandom('.webp')
             const ranp = getRandom('.png')
             wa.sendMessage(wa.from, pesan.tunggu, MessageType.text)
@@ -80,8 +102,13 @@ module.exports = {
                 return wa.sendMessage(wa.from, 'Gagal, Terjadi kesalahan, silahkan coba beberapa saat lagi.', MessageType.text)
             })
         } else if ((wa.isMedia || wa.isQuotedImage) && args.length == 0) {
-            const encmedia = wa.isQuotedImage ? JSON.parse(JSON.stringify(chat).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : chat
-            const media = await wa.downloadAndSaveMediaMessage(encmedia)
+            const encmedia = wa.isQuotedImage ? JSON.parse(JSON.stringify(chat).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : await wa.fetchMessagesFromWA(chat.key.remoteJid, 1, { id: chat.key.id })
+            let media
+            if (wa.isQuotedImage) {
+                media = await wa.downloadAndSaveMediaMessage(encmedia)
+            } else {
+                media = await wa.downloadAndSaveMediaMessage(encmedia[0])
+            }
             const ranw = getRandom('.webp')
             await ffmpeg(`./${media}`)
                 .on('start', function (cmd) {
