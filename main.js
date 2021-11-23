@@ -107,7 +107,6 @@ async function automaticStatus() {
         } catch (e) {
             console.log('[INFO] : %s', color(e, 'red'))
             wa.sendMessage(wa.from, 'Telah terjadi error setelah menggunakan command ini.', MessageType.text)
-            // wa.log(e)
         }
     })
 
