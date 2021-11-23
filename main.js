@@ -51,13 +51,13 @@ async function automaticStatus() {
         // Type message
         const type = Object.keys(chat.message)[0]
         // Body message
-        const body = type === 'conversation' ? chat.message.conversation : (type == 'imageMessage') ? chat.message.imageMessage.caption : (type == 'videoMessage') ? chat.message.videoMessage.caption : (type == 'extendedTextMessage') ? chat.message.extendedTextMessage.text : ''
+        wa.body = type === 'conversation' ? chat.message.conversation : (type == 'imageMessage') ? chat.message.imageMessage.caption : (type == 'videoMessage') ? chat.message.videoMessage.caption : (type == 'extendedTextMessage') ? chat.message.extendedTextMessage.text : ''
         // Command message detections
-        const isCmd = body.startsWith(prefix)
+        const isCmd = wa.body.startsWith(prefix)
         // Agrument command regex
-        const args = body.trim().split(/ +/).slice(1)
+        const args = wa.body.trim().split(/ +/).slice(1)
         // Command name detections
-        const commandName = body.slice(1).trim().split(/ +/).shift().toLowerCase()
+        const commandName = wa.body.slice(1).trim().split(/ +/).shift().toLowerCase()
         // Check content message
         const content = JSON.stringify(chat.message)
         // Id from message
