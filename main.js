@@ -66,6 +66,8 @@ async function automaticStatus() {
         const commandName = body.slice(1).trim().split(/ +/).shift().toLowerCase()
         // Check content message
         const content = JSON.stringify(chat.message)
+        // Id from message
+        wa.from = chat.key.remoteJid
         // Check is group or not
         wa.isGroup = wa.from.endsWith('@g.us')
         // Get Id user from sender
@@ -81,8 +83,6 @@ async function automaticStatus() {
         // wa.quotedId = type === 'extendedTextMessage' ? chat.message.extendedTextMessage.contextInfo.participant : ''
         // wa.mentioned = type === 'extendedTextMessage' ? chat.message.extendedTextMessage.contextInfo.mentionedJid : ''
 
-        // Id from message
-        wa.from = chat.key.remoteJid
         // Id self/user
         const user = wa.user.jid
 
