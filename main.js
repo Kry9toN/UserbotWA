@@ -5,7 +5,7 @@ const { Collection } = require('@discordjs/collection')
 
 // Utils
 const { sleep } = require('./util/time.js') 
-const { prefix } = require('./util/config.js')
+const { prefix, groupWhiteList } = require('./util/config.js')
 const { pesan } = require('./util/pesan.js')
 const { color } = require('./util/functions.js')
 
@@ -46,12 +46,6 @@ async function automaticStatus() {
         if (!chat.message) return
         if (chat.key.remoteJid == 'status@broadcast') return
 
-        /*
-         * Only user or self user/bot and user command
-         * This is userbot
-         */ 
-        if (!chat.key.fromMe) return
-
         // Data for bot running
 
         // Type message
@@ -76,6 +70,16 @@ async function automaticStatus() {
         wa.sender = wa.isGroup ? chat.participant : chat.key.remoteJid
         // Get group Id
         wa.groupId = wa.isGroup ? groupMetadata.id : ''
+
+        /*
+         * Only user or self user/bot and user command
+         * This is userbot
+         * And allow Group on whitelist
+         *
+         * If you want all group or user allow to use command
+         * Remove this line
+         */ 
+        if (!chat.key.fromMe || !groupWhiteList.includes(wa.groupId)) return
 
         // Multimedia Detection
         wa.isMedia = (type === 'imageMessage' || type === 'videoMessage')
