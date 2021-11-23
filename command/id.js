@@ -1,3 +1,5 @@
+const { MessageType } = require('@adiwajshing/baileys')
+
 module.exports = {
     name: 'id',
     description: 'Menampilkan id user/group',
