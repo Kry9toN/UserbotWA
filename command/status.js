@@ -6,7 +6,7 @@ module.exports = {
     execute (wa, chat, pesan, args) {
         const string = args.slice().join(' ')
         wa.setStatus(string)
-        .then(wa.sendMessage(wa.from, text, MessageType.text))
+        .then(wa.sendMessage(wa.from, 'Telah berhasil mengubah Bio', MessageType.text))
         .catch(console.error)
     }
 }
