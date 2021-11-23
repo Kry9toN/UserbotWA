@@ -2,8 +2,9 @@ const { MessageType } = require('@adiwajshing/baileys')
 const { sleep } = require('../util/time.js')
 
 module.exports = {
-    name: 'status',
-    description: 'Mengbah status/bio profil',
+    name: 'spam',
+    aliases: ['sp'],
+    description: 'Spam pesan ke target !spam <jumlah> <pesan>',
     execute (wa, chat, pesan, args) {
         const num = parseInt(args[0])
         for(let i = 0; i < num; i++) {
